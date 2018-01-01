@@ -1,0 +1,128 @@
+<h4>Formularios <small>data</small></h4>
+<hr>
+<form [formGroup]="formularioData" (ngSubmit)="guardarCambios()">
+
+  <div formGroupName="nombrecompleto">
+    <!-- Una forma de hacer la validación-->
+    <div class="form-group row" [ngClass]="{ 'has-danger': !formularioData.controls['nombrecompleto'].controls['nombre'].valid }">
+      <label class="col-2 col-form-label">Nombre</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Nombre"
+               formControlName="nombre">
+        <div *ngIf="formularioData.get('nombrecompleto.nombre').errors?.required"
+            class="form-control-feedback">
+          El nombre es necesario
+        </div>
+        <div *ngIf="formularioData.get('nombrecompleto.nombre').errors?.minlength"
+            class="form-control-feedback">
+          Por lo menos 3 caracteres
+        </div>
+      </div>
+    </div>
+    <!-- Otra forma de hacer la validación más corta-->
+    <div class="form-group row" [ngClass]="{ 'has-danger': !formularioData.get('nombrecompleto.apellido').valid }">
+      <label class="col-2 col-form-label">Apellido</label>
+      <div class="col-8">
+
+        <input class="form-control"
+               type="text"
+               placeholder="Apellido"
+               formControlName="apellido">
+        <div *ngIf="formularioData.get('nombrecompleto.apellido').errors?.required"
+            class="form-control-feedback">
+          El apellido es necesario
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="form-group row" [ngClass]="{ 'has-danger': !formularioData.get('correo').valid }">
+    <label class="col-2 col-form-label">Correo</label>
+    <div class="col-md-8">
+
+      <input class="form-control"
+             type="email"
+             placeholder="Correo electrónico"
+             formControlName="correo">
+      <div *ngIf="formularioData.controls['correo'].errors?.required"
+      class="form-control-feedback">
+        El correo es necesario
+      </div>
+      <div *ngIf="formularioData.controls['correo'].errors?.pattern"
+          class="form-control-feedback">
+          El campo no tiene el formato correcto.
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Username</label>
+    <div class="col-md-8">
+
+      <input class="form-control"
+              type="text"
+              placeholder="Nombre de usuario"
+              formControlName="username">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Password</label>
+    <div class="col-md-8">
+
+      <input class="form-control"
+              type="password"
+              placeholder="Password"
+              formControlName="password1">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Repetir Password</label>
+    <div class="col-md-8">
+
+      <input class="form-control"
+              type="password"
+              placeholder="Repetir contraseña"
+              formControlName="password2">
+    </div>
+  </div>
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">Pasatiempos</label>
+    <div class="col-md-8" formArrayName="pasatiempos">
+      <!-- Tb [formControlName]="i" se puede poner: formControlName="{{i}}"  -->
+      <input *ngFor="let pasatiempo of formularioData.controls['pasatiempos'].controls; let i = index"
+             [formControlName]="i"
+             class="form-control"
+             type="text">
+    </div>
+    <button (click)="agregarPasatiempo()"
+            type="button" class="btn btn-primary">
+        Nuevo
+    </button>
+  </div>
+
+
+
+  <div class="form-group row">
+    <label class="col-2 col-form-label">&nbsp;</label>
+    <div class="input-group col-md-8">
+      <button type="submit" class="btn btn-outline-primary">
+        Guardar
+      </button>
+    </div>
+  </div>
+
+  <p>
+  Formulario válido: <strong>{{formularioData.valid}}</strong>
+  </p>
+  <br>
+  {{formularioData.status}}
+
+</form>
